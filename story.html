@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Signals Interactive Map</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #2c3e50; color: #ecf0f1; display: flex; flex-direction: column; align-items: center; padding: 20px; min-height: 100vh; }
+        
+        .header { background: #27ae60; color: #fff; padding: 15px 30px; border-radius: 12px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 100%; max-width: 1200px; }
+        .header h1 { font-size: 2.2rem; margin-bottom: 5px; }
+        .header p { font-size: 1rem; opacity: 0.9; }
+
+        /* 单图全景容器 */
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 5px solid #27ae60;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #34495e;
+        }
+
+        .background-story-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 红色交互热点脉冲样式 */
+        .hotspot {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 87, 34, 0.75);
+            border: 3px solid #ffeb3b;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            animation: pulse 1.6s infinite;
+            transform: translate(-50%, -50%); 
+        }
+        .hotspot.large { width: 40px; height: 40px; }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.8); }
+            70% { transform: translate(-50%, -50%) scale(1.25); box-shadow: 0 0 0 10px rgba(255, 87, 34, 0); }
+            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
+        }
+
+        /* 22px 加粗指导气泡 */
+        .bubble {
+            position: absolute;
+            background: #ffffff;
+            color: #2c3e50;
+            padding: 15px 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            font-size: 22px; 
+            font-weight: bold;
+            max-width: 340px;
+            z-index: 20;
+            display: none;
+            border: 3px solid #f39c12;
+        }
+        
+        .bubble::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 12px 12px 0;
+            border-color: #ffffff transparent transparent;
+            display: block;
+            width: 0;
+            bottom: -12px;
+            left: 25px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Nature Signals: Interactive Adventure Map</h1>
+        <p>Click the red hotspots to listen and discover the key nature signals!</p>
+    </div>
+
+    <div class="map-container">
+        
+        <img src="story.jpg" onerror="this.src='story.png'; this.onerror=function(){alert('未找到图片文件！请确保图片命名为 story.jpg 或 story.png 且与网页在同一文件夹下。')}" class="background-story-img" alt="Sisters Adventure Map">
+
+        <div class="hotspot large" data-txt="Dark sky, hot weather and strong wind." data-target="b1-1" style="left: 18%; top: 8%;"></div>
+        <div class="hotspot" data-txt="Swallows flying very low." data-target="b1-2" style="left: 8%; top: 25%;"></div>
+        <div class="hotspot" data-txt="Ants carrying eggs up a hill." data-target="b1-3" style="left: 23%; top: 43%;"></div>
+        <div class="hotspot" data-txt="Closed pine cones." data-target="b1-4" style="left: 42%; top: 41%;"></div>
+
+        <div class="bubble" id="b1-1" style="left: 22%; top: 12%;"><span class="close-btn">×</span>Dark sky, hot weather and strong wind.</div>
+        <div class="bubble" id="b1-2" style="left: 12%; top: 28%;"><span class="close-btn">×</span>Swallows flying very low.</div>
+        <div class="bubble" id="b1-3" style="left: 27%; top: 35%;"><span class="close-btn">×</span>Ants carrying eggs up a hill.</div>
+        <div class="bubble" id="b1-4" style="left: 32%; top: 25%;"><span class="close-btn">×</span>Closed pine cones.</div>
+
+
+        <div class="hotspot" data-txt="Dangerous wild berries." data-target="b2-1" style="left: 58%; top: 28%;"></div>
+        
+        <div class="hotspot" data-txt="Safe walnuts to eat." data-target="b2-3" style="left: 77%; top: 7%;"></div>
+        
+        <div class="hotspot" data-txt="Safe dates to eat." data-target="b2-4" style="left: 92%; top: 22%;"></div>
+
+        <div class="bubble" id="b2-1" style="left: 62%; top: 32%;"><span class="close-btn">×</span>Dangerous wild berries.</div>
+        <div class="bubble" id="b2-3" style="left: 70%; top: 14%;"><span class="close-btn">×</span>Safe walnuts to eat.</div>
+        <div class="bubble" id="b2-4" style="left: 68%; top: 26%;"><span class="close-btn">×</span>Safe dates to eat.</div>
+
+
+        <div class="hotspot large" data-txt="Unsafe still water." data-target="b3-1" style="left: 28%; top: 93%;"></div>
+        <div class="hotspot" data-txt="Sound of water flowing." data-target="b3-2" style="left: 15%; top: 68%;"></div>
+        <div class="hotspot" data-txt="Very green plants." data-target="b3-3" style="left: 33%; top: 62%;"></div>
+        <div class="hotspot" data-txt="Clean water from the rock cracks." data-target="b3-4" style="left: 41%; top: 70%;"></div>
+
+        <div class="bubble" id="b3-1" style="left: 32%; top: 75%;"><span class="close-btn">×</span>Unsafe still water.</div>
+        <div class="bubble" id="b3-2" style="left: 18%; top: 52%;"><span class="close-btn">×</span>Sound of water flowing.</div>
+        <div class="bubble" id="b3-3" style="left: 36%; top: 50%;"><span class="close-btn">×</span>Very green plants.</div>
+        <div class="bubble" id="b3-4" style="left: 20%; top: 72%;"><span class="close-btn">×</span>Clean water from the rock cracks.</div>
+
+
+        <div class="hotspot" data-txt="Helpless with a bleeding knee." data-target="b4-1" style="left: 71%; top: 82%;"></div>
+        <div class="hotspot" data-txt="Green plantain leaves." data-target="b4-2" style="left: 61%; top: 92%;"></div>
+        <div class="hotspot" data-txt="Crushed plantain leaves to stop bleeding." data-target="b4-3" style="left: 78%; top: 83%;"></div>
+
+        <div class="bubble" id="b4-1" style="left: 50%; top: 68%;"><span class="close-btn">×</span>Helpless with a bleeding knee.</div>
+        <div class="bubble" id="b4-2" style="left: 64%; top: 72%;"><span class="close-btn">×</span>Green plantain leaves.</div>
+        <div class="bubble" id="b4-3" style="left: 55%; top: 76%;"><span class="close-btn">×</span>Crushed plantain leaves to stop bleeding.</div>
+
+    </div>
+
+<script>
+    function stopSpeak(){
+        window.speechSynthesis.cancel();
+    }
+
+    function speakEn(text){
+        stopSpeak(); 
+        let utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "en-US";
+        utter.rate = 0.88; 
+        speechSynthesis.speak(utter);
+    }
+
+    // 【全新并存逻辑】：点击红点时不再隐藏其他红点的气泡
+    document.querySelectorAll('.hotspot').forEach(h=>{
+        h.onclick=(event)=>{
+            event.stopPropagation(); 
+            let txt = h.dataset.txt;
+            let bb = document.getElementById(h.dataset.target);
+            
+            if (bb.style.display === 'block') {
+                bb.style.display = 'none'; 
+                stopSpeak(); 
+            } else {
+                // 移除了清空其他气泡的代码，现在所有点击过的气泡都会同时在屏幕上显现！
+                bb.style.display = 'block'; 
+                speakEn(txt); 
+            }
+        }
+    })
+
+    // 点击气泡上的 × 号关闭自己
+    document.querySelectorAll('.close-btn').forEach(c=>{
+        c.onclick=event=>{
+            event.stopPropagation();
+            c.parentElement.style.display = 'none';
+            stopSpeak();
+        }
+    })
+</script>
+</body>
+</html>
